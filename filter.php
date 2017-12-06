@@ -1,4 +1,5 @@
 ﻿<?php
+error_reporting(E_ALL ^ E_WARNING);
 
 //Input parameters
 $source_sentences 	= $argv[1];
