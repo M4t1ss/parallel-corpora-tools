@@ -24,8 +24,8 @@ filename=$(basename "$2")
 extension="${filename##*.}"
 filename="${filename%.*}"
 
-# Sort and get only uniqe sentence pairs
-sort $1.$filename.$extension.both | uniq -u > $1.$filename.$extension.both.uniqe
+# Sort and get only unique sentence pairs
+sort $1.$filename.$extension.both | uniq -u > $1.$filename.$extension.both.unique
 
 # Split the sentences back into two
 php split-parallel.php $1 $2
