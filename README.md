@@ -15,6 +15,7 @@ Tools included
 	* Removes sentences that are not in the specified source or target language.
 * [3-unique-parallel.sh](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/3-unique-parallel.sh)
 	* Removes duplicate parallel sentences.
+	* Removes sentences that contain more non-alphabetical symbols than alphabetical ones.
 * [4-moses-scripts-subword-nmt.sh](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/4-moses-scripts-subword-nmt.sh)
 	* The regular Moses tokenizer -> cleaner -> truecaser and subword NMT.
 
