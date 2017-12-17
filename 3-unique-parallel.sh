@@ -20,6 +20,11 @@
 # - files after removing sentences that contain more non-alphabetical symbols than alphabetical ones
 #	filename.en.up.nonalpha
 #	filename.de.up.nonalpha
+#
+# - files after removing sentences where there are twice as many non-alphabetical symbols 
+# - in the source side than there are in te target side or vice versa
+#	filename.en.up.nonalpha.nonmatch
+#	filename.de.up.nonalpha.nonmatch
 
 # Concatanate sentences from both files
 php concat-parallel.php $1 $2
@@ -37,3 +42,6 @@ php split-parallel.php $1 $2
 
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
 php non-alpha.php $1.up $2.up
+
+# Remove sentences where there are more non-alphabetical symbols than alphabetical
+php non-matching-non-alpha.php $1.up.nonalpha $2.up.nonalpha
