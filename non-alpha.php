@@ -14,9 +14,10 @@ $outTRG = fopen($target_sentences.".nonalpha", "w") or die("Can't create output 
 $i = 1;
 while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($inTRG)) !== false) {
 	
-	//Let's see how many non-alphabetic characters are in the sentences...
-	$onlyAlpha_source = preg_replace("/[^a-zA-ZēūīāšķļĢžčņĒŪĪĀŠĻĢŽČŅ\n ]+/", "", $sourceSentence);
-	$onlyAlpha_target = preg_replace("/[^a-zA-ZēūīāšķļĢžčņĒŪĪĀŠĻĢŽČŅ\n ]+/", "", $targetSentence);
+	//Let's see how many non-alphabetic characters are in the sentences.
+	//Latvian and Estonian diacritics only... Add more if working with other languages
+	$onlyAlpha_source = preg_replace("/[^a-zA-ZēūīāšķļĢžčņäõöüĒŪĪĀŠĻĢŽČŅÕÖÜ\n ]+/", "", $sourceSentence);
+	$onlyAlpha_target = preg_replace("/[^a-zA-ZēūīāšķļĢžčņäõöüĒŪĪĀŠĻĢŽČŅÕÖÜ\n ]+/", "", $targetSentence);
 	
 	if(
 		(strlen($onlyAlpha_source) > strlen($sourceSentence)/2) && 
