@@ -14,13 +14,14 @@ $outTRG = fopen($target_sentences.".nonmatch", "w") or die("Can't create output 
 $i = 1;
 while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($inTRG)) !== false) {
 	
-	//Let's see how many non-alphabetic characters are in the sentences...
-	$noAlpha_source = preg_replace("/[,a-zA-ZēūīāšķļĢžčņĒŪĪĀŠĻĢŽČŅ ]+/", "", $sourceSentence);
-	$noAlpha_target = preg_replace("/[,a-zA-ZēūīāšķļĢžčņĒŪĪĀŠĻĢŽČŅ ]+/", "", $targetSentence);
+	//Let's see how many non-alphabetic characters are in the sentences.
+	//Latvian and Estonian diacritics only... Add more if working with other languages
+	$noAlpha_source = preg_replace("/[,a-zA-ZēūīāšķļĢžčņäõöüĒŪĪĀŠĻĢŽČŅÕÖÜ ]+/", "", $sourceSentence);
+	$noAlpha_target = preg_replace("/[,a-zA-ZēūīāšķļĢžčņäõöüĒŪĪĀŠĻĢŽČŅÕÖÜ ]+/", "", $targetSentence);
 	
 	if(
-		(strlen($noAlpha_source) < strlen($noAlpha_target)*2) && 
-		(strlen($noAlpha_target) < strlen($noAlpha_source)*2)
+		(strlen($noAlpha_source) < strlen($noAlpha_target)*3) && 
+		(strlen($noAlpha_target) < strlen($noAlpha_source)*3)
 		)
     {
         fwrite($outSRC, $sourceSentence);

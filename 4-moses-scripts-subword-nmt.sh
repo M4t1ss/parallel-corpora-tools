@@ -14,7 +14,7 @@ mkdir 3-tc
 mkdir 4-bpe
 
 # Tokenize & stuff...
-cat dcep.pro.en | /tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/dcep.tok.en
+cat dcep.pro.en | $mosesdir/tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/dcep.tok.en
 cat dcep.pro.lv | $mosesdir/tokenizer/normalize-punctuation.perl -l lv | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l lv > 1-tok/dcep.tok.lv
 
 cat europarl.pro.en | $mosesdir/tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/europarl.tok.en
