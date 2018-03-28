@@ -7,15 +7,17 @@
 #
 # Outputs:
 #
-# - a file with all parallel sentences concatanated in each single line; 
-#	filename.en.filename.de.both
-#
-# - the same file sorted and unique; 
-#	filename.en.filename.de.both.unique
-#
 # - parallel sorted and unique files; 
 #	filename.en.up
 #	filename.de.up
+#
+# - files with no repeating source sentences; 
+#	filename.en.up.nor
+#	filename.de.up.nor
+#
+# - files with no repeating target sentences; 
+#	filename.en.up.nor.up.nor
+#	filename.de.up.nor.up.nor
 #
 # - files after removing sentences that contain more non-alphabetical symbols than alphabetical ones
 #	filename.en.up.nonalpha
@@ -40,8 +42,36 @@ sort $1.$filename.$extension.both | uniq -u > $1.$filename.$extension.both.uniqu
 # Split the sentences back into two
 php split-parallel.php $1 $2
 
+# Remove repeating source sentences
+php filter-repeating.php $1.up $2.up
+
+# Concatanate sentences from both files with the target file as the first one
+php concat-parallel.php $2.up.nor $1.up.nor
+
+
+# Remove some useless files
+rm $1.$filename.$extension.both
+rm $1.$filename.$extension.both.unique
+filename=$(basename "$1")
+extension="${filename##*.}"
+filename="${filename%.*}"
+
+# Sort
+sort $2.up.nor.$filename.$extension.up.nor.both > $2.up.nor.$filename.$extension.up.nor.both.unique
+
+# Split the sentences back into two
+php split-parallel.php $2.up.nor $1.up.nor
+
+# Remove repeating source sentences
+php filter-repeating.php $2.up.nor.up $1.up.nor.up
+
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
 php non-alpha.php $1.up $2.up
 
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
 php non-matching-non-alpha.php $1.up.nonalpha $2.up.nonalpha
+
+# Remove some useless files
+rm $2.up.nor.$filename.$extension.up.nor.both
+rm $2.up.nor.$filename.$extension.up.nor.both.unique
+
