@@ -1,9 +1,12 @@
 ﻿<?php
 error_reporting(E_ALL & ~E_WARNING);
+include("regular-expressions.php");
 
 //Input parameters
 $source_sentences 	= $argv[1];
 $target_sentences	= $argv[2];
+$source_code     	= $argv[3];
+$target_code    	= $argv[4];
 
 //Open files
 $inSRC = fopen($source_sentences, "r") or die("Can't open input file!");
@@ -16,8 +19,8 @@ while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($
 	
 	//Let's see how many non-alphabetic characters are in the sentences.
 	//Latvian and Estonian diacritics only... Add more if working with other languages
-	$onlyAlpha_source = preg_replace("/[^a-zA-ZēūīāšķļĢžčņäõöüĒŪĪĀŠĻĢŽČŅÕÖÜ\n ]+/", "", $sourceSentence);
-	$onlyAlpha_target = preg_replace("/[^a-zA-ZēūīāšķļĢžčņäõöüĒŪĪĀŠĻĢŽČŅÕÖÜ\n ]+/", "", $targetSentence);
+	$onlyAlpha_source = preg_replace("/[^" + $regex[$source_code] + "\n ]+/", "", $sourceSentence);
+	$onlyAlpha_target = preg_replace("/[^" + $regex[$target_code] + "\n ]+/", "", $targetSentence);
 	
 	if(
 		(strlen($onlyAlpha_source) > strlen($sourceSentence)/2) && 

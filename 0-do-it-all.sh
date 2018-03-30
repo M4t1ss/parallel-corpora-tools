@@ -27,7 +27,9 @@ cat $dir/*.$trg > $dir/output/corpus.$trg
 
 ./3-unique-parallel.sh \
     $dir/output/corpus.$src.c.lang.txt.goodlang \
-    $dir/output/corpus.$trg.c.lang.txt.goodlang
+    $dir/output/corpus.$trg.c.lang.txt.goodlang \
+    $src \
+    $trg
 
 ./4-moses-scripts-subword-nmt.sh \
     $dir \
