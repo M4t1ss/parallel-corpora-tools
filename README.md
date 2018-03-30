@@ -9,6 +9,8 @@ the majority of junk from parallel corpora.
 
 Tools included
 ---------
+* [0-do-it-all.sh](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/0-do-it-all.sh)
+	* Calls all the proceeding scripts in order.
 * [1-find-equal-lines.sh](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/1-find-equal-lines.sh)
 	* Gets rid of sentences that are identical in both - the source and target side.
 * [2-identify-language.sh](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/2-identify-language.sh)
