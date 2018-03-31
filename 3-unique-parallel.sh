@@ -4,6 +4,8 @@
 # - parallel file names
 #	filename.en
 #	filename.de
+#	en
+#	de
 #
 # Outputs:
 #
@@ -66,10 +68,10 @@ php split-parallel.php $2.up.nor $1.up.nor
 php filter-repeating.php $2.up.nor.up $1.up.nor.up
 
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
-php non-alpha.php $1.up $2.up
+php non-alpha.php $1.up $2.up $3 $4
 
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
-php non-matching-non-alpha.php $1.up.nonalpha $2.up.nonalpha
+php non-matching-non-alpha.php $1.up.nonalpha $2.up.nonalpha $3 $4
 
 # Remove some useless files
 rm $2.up.nor.$filename.$extension.up.nor.both

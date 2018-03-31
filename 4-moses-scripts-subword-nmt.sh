@@ -3,59 +3,48 @@
 # Requires scripts from Moses - https://github.com/moses-smt/mosesdecoder
 # And Subword NMT - https://github.com/rsennrich/subword-nmt
 # 
-# Hardcoded file names! Watch out!! 
+# Parameters:
+#	directory that contains output parallel files from the previous script (corpus.[lang].c.lang.txt.goodlang.up.nonalpha.nonmatch)
+#	source language code
+#	target language code
+
+dir=$1
+src=$2
+trg=$3
 
 mosesdir=/opt/moses/scripts
 subworddir=~/tools/subword-nmt
 
-mkdir 1-tok
-mkdir 2-clean
-mkdir 3-tc
-mkdir 4-bpe
+mkdir $dir/1-tok
+mkdir $dir/2-clean
+mkdir $dir/3-tc
+mkdir $dir/4-bpe
 
 # Tokenize & stuff...
-cat dcep.pro.en | $mosesdir/tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/dcep.tok.en
-cat dcep.pro.lv | $mosesdir/tokenizer/normalize-punctuation.perl -l lv | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l lv > 1-tok/dcep.tok.lv
+cat $dir/output/corpus.$src.c.goodlang.up.nonalpha.nonmatch | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/corpus.tok.$src
+cat $dir/output/corpus.$trg.c.goodlang.up.nonalpha.nonmatch | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/corpus.tok.$trg
 
-cat europarl.pro.en | $mosesdir/tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/europarl.tok.en
-cat europarl.pro.lv | $mosesdir/tokenizer/normalize-punctuation.perl -l lv | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l lv > 1-tok/europarl.tok.lv
-
-cat rapid.pro.en | $mosesdir/tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/rapid.tok.en
-cat rapid.pro.lv | $mosesdir/tokenizer/normalize-punctuation.perl -l lv | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l lv > 1-tok/rapid.tok.lv
-
-cat leta.pro.en | $mosesdir/tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/leta.tok.en
-cat leta.pro.lv | $mosesdir/tokenizer/normalize-punctuation.perl -l lv | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l lv > 1-tok/leta.tok.lv
-
-cat farewell.pro.en | $mosesdir/tokenizer/normalize-punctuation.perl -l en | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l en > 1-tok/farewell.tok.en
-cat farewell.pro.lv | $mosesdir/tokenizer/normalize-punctuation.perl -l lv | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l lv > 1-tok/farewell.tok.lv
+cat dev/newsdev2018.$src | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/newsdev2018.tok.$src
+cat dev/newsdev2018.$trg | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/newsdev2018.tok.$trg
 
 # Clean
-$mosesdir/training/clean-corpus-n.perl -ratio 3 1-tok/dcep.tok en lv 2-clean/dcep.clean.tok 2 80
-$mosesdir/training/clean-corpus-n.perl -ratio 3 1-tok/europarl.tok en lv 2-clean/europarl.clean.tok 2 80
-$mosesdir/training/clean-corpus-n.perl -ratio 3 1-tok/rapid.tok en lv 2-clean/rapid.clean.tok 2 80
-$mosesdir/training/clean-corpus-n.perl -ratio 3 1-tok/leta.tok en lv 2-clean/leta.clean.tok 2 80
-$mosesdir/training/clean-corpus-n.perl -ratio 3 1-tok/farewell.tok en lv 2-clean/farewell.clean.tok 2 80
-
-# Concatanate into one
-cat 2-clean/*.en > 2-clean/corpus.tok.en
-cat 2-clean/*.lv > 2-clean/corpus.tok.lv
+$mosesdir/training/clean-corpus-n.perl -ratio 3 $dir/1-tok/corpus.tok $src $trg $dir/2-clean/corpus.clean.tok 2 80
 
 # Train truecasers
-$mosesdir/recaser/train-truecaser.perl -corpus 2-clean/corpus.tok.lv -model 2-clean/truecase-model.lv
-$mosesdir/recaser/train-truecaser.perl -corpus 2-clean/corpus.tok.en -model 2-clean/truecase-model.en
+$mosesdir/recaser/train-truecaser.perl -corpus $dir/2-clean/corpus.clean.tok.$trg -model $dir/2-clean/truecase-model.$trg
+$mosesdir/recaser/train-truecaser.perl -corpus $dir/2-clean/corpus.clean.tok.$src -model $dir/2-clean/truecase-model.$src
 
 # Truecase
-$mosesdir/recaser/truecase.perl -model 2-clean/truecase-model.lv < 2-clean/corpus.tok.lv > 3-tc/corpus.tc.lv
-$mosesdir/recaser/truecase.perl -model 2-clean/truecase-model.en < 2-clean/corpus.tok.en > 3-tc/corpus.tc.en
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$trg < $dir/2-clean/corpus.clean.tok.$trg > $dir/3-tc/corpus.tc.$trg
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$src < $dir/2-clean/corpus.clean.tok.$src > $dir/3-tc/corpus.tc.$src
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$trg < $dir/1-tok/newsdev2018.tok.$trg > $dir/3-tc/newsdev2018.tc.$trg
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$src < $dir/1-tok/newsdev2018.tok.$src > $dir/3-tc/newsdev2018.tc.$src
 
 # Split into subword units
-$subworddir/learn_joint_bpe_and_vocab.py --input 3-tc/corpus.tc.lv 3-tc/corpus.tc.en -s 35000 -o 4-bpe/model.bpe --write-vocabulary 4-bpe/vocab.lv 4-bpe/vocab.en
+$subworddir/learn_joint_bpe_and_vocab.py --input $dir/3-tc/corpus.tc.$trg $dir/3-tc/corpus.tc.$src -s 35000 -o $dir/4-bpe/model.bpe --write-vocabulary $dir/4-bpe/vocab.$trg $dir/4-bpe/vocab.$src
 
-$subworddir/apply_bpe.py -c 4-bpe/model.bpe --vocabulary 4-bpe/vocab.lv --vocabulary-threshold 50 < 3-tc/corpus.tc.lv > 4-bpe/corpus.bpe.lv
-$subworddir/apply_bpe.py -c 4-bpe/model.bpe --vocabulary 4-bpe/vocab.en --vocabulary-threshold 50 < 3-tc/corpus.tc.en > 4-bpe/corpus.bpe.en
+$subworddir/apply_bpe.py -c $dir/4-bpe/model.bpe --vocabulary $dir/4-bpe/vocab.$trg --vocabulary-threshold 50 < $dir/3-tc/corpus.tc.$trg > $dir/4-bpe/corpus.bpe.$trg
+$subworddir/apply_bpe.py -c $dir/4-bpe/model.bpe --vocabulary $dir/4-bpe/vocab.$src --vocabulary-threshold 50 < $dir/3-tc/corpus.tc.$src > $dir/4-bpe/corpus.bpe.$src
 
-$subworddir/apply_bpe.py -c 4-bpe/model.bpe --vocabulary 4-bpe/vocab.lv --vocabulary-threshold 50 < 3-tc/newsdev2017.tc.lv > 4-bpe/newsdev2017.bpe.lv
-$subworddir/apply_bpe.py -c 4-bpe/model.bpe --vocabulary 4-bpe/vocab.en --vocabulary-threshold 50 < 3-tc/newsdev2017.tc.en > 4-bpe/newsdev2017.bpe.en
-
-$subworddir/apply_bpe.py -c 4-bpe/model.bpe --vocabulary 4-bpe/vocab.lv --vocabulary-threshold 50 < 3-tc/newstest2017.tc.lv > 4-bpe/newstest2017.bpe.lv
-$subworddir/apply_bpe.py -c 4-bpe/model.bpe --vocabulary 4-bpe/vocab.en --vocabulary-threshold 50 < 3-tc/newstest2017.tc.en > 4-bpe/newstest2017.bpe.en
+$subworddir/apply_bpe.py -c $dir/4-bpe/model.bpe --vocabulary $dir/4-bpe/vocab.$trg --vocabulary-threshold 50 < $dir/3-tc/newsdev2018.tc.$trg > $dir/4-bpe/newsdev2018.bpe.$trg
+$subworddir/apply_bpe.py -c $dir/4-bpe/model.bpe --vocabulary $dir/4-bpe/vocab.$src --vocabulary-threshold 50 < $dir/3-tc/newsdev2018.tc.$src > $dir/4-bpe/newsdev2018.bpe.$src
