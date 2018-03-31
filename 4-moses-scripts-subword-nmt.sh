@@ -21,8 +21,8 @@ mkdir $dir/3-tc
 mkdir $dir/4-bpe
 
 # Tokenize & stuff...
-cat $dir/$dir/output/corpus.$src.c.lang.txt.goodlang.up.nonalpha.nonmatch | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/corpus.tok.$src
-cat $dir/$dir/output/corpus.$trg.c.lang.txt.goodlang.up.nonalpha.nonmatch | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/corpus.tok.$trg
+cat $dir/output/corpus.$src.c.goodlang.up.nonalpha.nonmatch | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/corpus.tok.$src
+cat $dir/output/corpus.$trg.c.goodlang.up.nonalpha.nonmatch | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/corpus.tok.$trg
 
 cat dev/newsdev2018.$src | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/newsdev2018.tok.$src
 cat dev/newsdev2018.$trg | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/newsdev2018.tok.$trg

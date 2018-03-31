@@ -26,8 +26,8 @@ cat $dir/*.$trg > $dir/output/corpus.$trg
     $trg
 
 ./3-unique-parallel.sh \
-    $dir/output/corpus.$src.c.lang.txt.goodlang \
-    $dir/output/corpus.$trg.c.lang.txt.goodlang \
+    $dir/output/corpus.$src.c.goodlang \
+    $dir/output/corpus.$trg.c.goodlang \
     $src \
     $trg
 
