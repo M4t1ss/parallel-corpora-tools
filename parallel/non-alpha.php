@@ -1,6 +1,6 @@
 ﻿<?php
 error_reporting(E_ALL & ~E_WARNING);
-include("regular-expressions.php");
+include("../regular-expressions.php");
 
 //Input parameters
 $source_sentences 	= $argv[1];
@@ -21,7 +21,7 @@ $i = 1;
 while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($inTRG)) !== false) {
 	
 	//Let's see how many non-alphabetic characters are in the sentences.
-	//Latvian and Estonian diacritics only... Add more if working with other languages
+	//Add more language specific expressions to regular-expressions.php when working with other languages
 	$onlyAlpha_source = preg_replace($source_regex, "", $sourceSentence);
 	$onlyAlpha_target = preg_replace($target_regex, "", $targetSentence);
 	
