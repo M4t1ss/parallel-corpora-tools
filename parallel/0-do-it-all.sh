@@ -20,7 +20,7 @@ cat $dir/*.$trg > $dir/output/corpus.$trg
     $dir/output/corpus.$trg
 
 ./2-unique-parallel.sh \
-    $dir/output/corpus.$src.c	\
+    $dir/output/corpus.$src.c \
     $dir/output/corpus.$trg.c \
     $src \
     $trg
