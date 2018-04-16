@@ -19,15 +19,15 @@ cat $dir/*.$trg > $dir/output/corpus.$trg
     $dir/output/corpus.$src \
     $dir/output/corpus.$trg
 
-./2-identify-language.sh \
-    $dir/output/corpus.$src.c \
+./2-unique-parallel.sh \
+    $dir/output/corpus.$src.c	\
     $dir/output/corpus.$trg.c \
     $src \
     $trg
 
-./3-unique-parallel.sh \
-    $dir/output/corpus.$src.c.goodlang \
-    $dir/output/corpus.$trg.c.goodlang \
+./3-identify-language.sh \
+    $dir/output/corpus.$src.c.up.nonalpha.nonmatch \
+    $dir/output/corpus.$trg.c.up.nonalpha.nonmatch \
     $src \
     $trg
 
