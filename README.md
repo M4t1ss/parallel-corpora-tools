@@ -9,8 +9,8 @@ the majority of junk from parallel corpora.
 
 Tools included
 ---------
-* parallel - tools for parallel corpora
-* mono - tools for monolingual corpora
+* [parallel](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/parallel) - tools for parallel corpora
+* [mono](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/mono) - tools for monolingual corpora
 
 Requirements
 ---------
