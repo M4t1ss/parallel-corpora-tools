@@ -11,7 +11,7 @@
 
 
 # Sort and get only unique sentence pairs
-sort -T /home/matiss/data/tmp $1 | uniq -u > $1.unique
+sort $1 | uniq -u > $1.unique
 
 
 # Remove sentences where there are more non-alphabetical symbols than alphabetical

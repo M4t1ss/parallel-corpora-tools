@@ -73,6 +73,9 @@ php non-alpha.php $1.up $2.up $3 $4
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
 php non-matching-non-alpha.php $1.up.nonalpha $2.up.nonalpha $3 $4
 
+# Remove sentences that have repeating tokens (this is more useful for filtering back-translated data)
+php repeating-tokens.php $1.up.nonalpha.nonmatch $2.up.nonalpha.nonmatch
+
 # Remove some useless files
 rm $2.up.nor.$filename.$extension.up.nor.both
 rm $2.up.nor.$filename.$extension.up.nor.both.unique

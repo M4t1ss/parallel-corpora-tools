@@ -26,8 +26,8 @@ cat $dir/*.$trg > $dir/output/corpus.$trg
     $trg
 
 ./3-identify-language.sh \
-    $dir/output/corpus.$src.c.up.nonalpha.nonmatch \
-    $dir/output/corpus.$trg.c.up.nonalpha.nonmatch \
+    $dir/output/corpus.$src.c.up.nonalpha.nonmatch.nonrep \
+    $dir/output/corpus.$trg.c.up.nonalpha.nonmatch.nonrep \
     $src \
     $trg
 
