@@ -7,8 +7,12 @@ $target_sentences	= $argv[2];
 //Open files
 $inSRC = fopen($source_sentences, "r") or die("Can't open input file!");
 $inTRG = fopen($target_sentences, "r") or die("Can't open input file!");
-$outSRC = fopen($source_sentences.".nonrep", "w") or die("Can't create output file!");
-$outTRG = fopen($target_sentences.".nonrep", "w") or die("Can't create output file!");
+
+$outSRC = fopen($source_sentences.".reptok", "w") or die("Can't create output file!");
+$outTRG = fopen($target_sentences.".reptok", "w") or die("Can't create output file!");
+
+$outSRC_rem = fopen(str_replace("/output","/output/removed",$source_sentences).".reptok", "w") or die("Can't create removed source output file!");
+$outTRG_rem = fopen(str_replace("/output","/output/removed",$target_sentences).".reptok", "w") or die("Can't create removed target output file!");
 
 $i = 0;
 while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($inTRG)) !== false) {
@@ -19,6 +23,8 @@ while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($
         fwrite($outSRC, $sourceSentence);
         fwrite($outTRG, $targetSentence);
     }else{
+        fwrite($outSRC_rem, $sourceSentence);
+        fwrite($outTRG_rem, $targetSentence);
 		$i++;
 	}
 }

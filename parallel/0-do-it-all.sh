@@ -10,6 +10,7 @@ src=$2
 trg=$3
 
 mkdir $dir/output
+mkdir $dir/output/removed
 
 cat $dir/*.$src > $dir/output/corpus.$src
 cat $dir/*.$trg > $dir/output/corpus.$trg
@@ -26,8 +27,8 @@ cat $dir/*.$trg > $dir/output/corpus.$trg
     $trg
 
 ./3-identify-language.sh \
-    $dir/output/corpus.$src.c.up.nonalpha.nonmatch.nonrep \
-    $dir/output/corpus.$trg.c.up.nonalpha.nonmatch.nonrep \
+    $dir/output/corpus.$src.c.up.nonalpha.nonmatch.reptok \
+    $dir/output/corpus.$trg.c.up.nonalpha.nonmatch.reptok \
     $src \
     $trg
 
