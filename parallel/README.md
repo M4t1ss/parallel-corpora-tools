@@ -18,5 +18,6 @@ Tools included
 	* Removes repeating source sentences aligned to multiple target sentences and repeating target sentences aligned to multiple source sentences.
 	* Removes sentences that contain more non-alphabetical symbols than alphabetical ones.
 	* Removes sentence pairs where there are significantly more non-alphabetical symbols than on one side compared to the other.
+	* Removes sentence pairs that have repeating tokens. This filter is more useful for dealing with back-translated data from NMT.
 * [4-moses-scripts-subword-nmt.sh](https://github.com/M4t1ss/parallel-corpora-tools/blob/master/parallel/4-moses-scripts-subword-nmt.sh)
 	* The regular Moses tokenizer -> cleaner -> truecaser and subword NMT.
