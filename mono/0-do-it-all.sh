@@ -1,18 +1,22 @@
 #/bin/bash
 
 # Parameters:
-#	directory that contains multiple parallel files with language codes as extensions
-#	source language code
+#	* directory that contains multiple monolingual files
+#	* language code
+#	* truecase model
+#	* subword unit model
 
 dir=$1
 src=$2
+tcmodel=$3
+bpemodel=$4
 
 mkdir $dir/output
 
 cat $dir/* > $dir/output/corpus.$src
 
 
-./1-unique-parallel.sh \
+./1-unique.sh \
     $dir/output/corpus.$src \
 	$src
 
@@ -22,5 +26,7 @@ cat $dir/* > $dir/output/corpus.$src
 
 ./3-moses-scripts-subword-nmt.sh \
     $dir \
-    $src
+    $src \
+    $tcmodel \
+    $bpemodel
 
