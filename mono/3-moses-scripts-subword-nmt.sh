@@ -14,7 +14,7 @@ src=$2
 tcmodel=$3
 bpemodel=$4
 
-mosesdir=/opt/moses/scripts
+mosesdir=~/tools/mosesdecoder/scripts
 subworddir=~/tools/subword-nmt
 
 mkdir $dir/1-tok
@@ -25,7 +25,7 @@ mkdir $dir/4-bpe
 # Tokenize & stuff...
 cat $dir/output/corpus.$src.unique.nonalpha.goodlang | \
 	$mosesdir/tokenizer/normalize-punctuation.perl -l $src | \
-	$mosesdir/tokenizer/tokenizerv2.perl -a -threads 8 -l $src \
+	$mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src \
 	> $dir/1-tok/corpus.tok.$src
 
 # Clean
