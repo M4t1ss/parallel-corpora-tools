@@ -18,3 +18,21 @@ Requirements
 * PHP
 * [Moses scripts](https://github.com/moses-smt/mosesdecoder)
 * [Subword NMT](https://github.com/rsennrich/subword-nmt)
+
+	
+Publications
+---------
+
+If you use this tool, please cite the following paper:
+
+Matīss Rikters (2018). "[Impact of Corpora Quality on Neural Machine Translation.](https://www.hlt2018.ut.ee/)" In Proceedings of the 8th Conference Human Language Technologies - The Baltic Perspective (Baltic HLT 2018) (2018).
+
+```
+@inproceedings{Rikters2018BalticHLT,
+	author = {Rikters, Matīss},
+	booktitle={In Proceedings of the 8th Conference Human Language Technologies - The Baltic Perspective (Baltic HLT 2018)},
+	title = {{Impact of Corpora Quality on Neural Machine Translation}},
+	address={Tartu, Estonia},
+	year = {2018}
+}
+```
