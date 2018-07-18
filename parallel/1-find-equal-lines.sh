@@ -8,8 +8,10 @@
 #	filename.en.c
 #	filename.de.c
 
-sort $1 > $1.s
-sort $2 > $2.s
+sort $1 > $1.s &
+sort $2 > $2.s &
+
+wait
 
 comm -12 $1.s $2.s | uniq -u > $1.equal.txt
 
