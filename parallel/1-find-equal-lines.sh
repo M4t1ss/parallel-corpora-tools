@@ -11,7 +11,7 @@
 sort $1 > $1.s
 sort $2 > $2.s
 
-comm -12 $1.s $2.s > $1.equal.txt
+comm -12 $1.s $2.s | uniq -u > $1.equal.txt
 
 rm $1.s
 rm $2.s
