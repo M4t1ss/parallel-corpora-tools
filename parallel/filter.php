@@ -9,7 +9,6 @@ $bad_sentence_num 	= $argv[3];
 //Open files
 $inSRC = fopen($source_sentences, "r") or die("Can't open source input file!");
 $inTRG = fopen($target_sentences, "r") or die("Can't open target input file!");
-$inNUM = fopen($bad_sentence_num, "r") or die("Can't open number input file!");
 
 $outSRC = fopen($source_sentences.".goodlang", "w") or die("Can't create source output file!");
 $outTRG = fopen($target_sentences.".goodlang", "w") or die("Can't create target output file!");
