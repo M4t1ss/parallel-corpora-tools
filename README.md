@@ -19,6 +19,11 @@ Requirements
 * [Moses scripts](https://github.com/moses-smt/mosesdecoder)
 * [Subword NMT](https://github.com/rsennrich/subword-nmt)
 
+```bash
+pip install subword-nmt
+pip install langid
+```
+
 	
 Publications
 ---------
