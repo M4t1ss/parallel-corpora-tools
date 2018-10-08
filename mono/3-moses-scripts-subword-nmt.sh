@@ -1,7 +1,7 @@
 #/bin/bash
 
 # Requires scripts from Moses - https://github.com/moses-smt/mosesdecoder
-# And Subword NMT - https://github.com/rsennrich/subword-nmt
+# And Subword NMT - https://github.com/rsennrich/subword-nmt (pip install subword-nmt)
 # 
 # Prarameters:
 #	* directory where the previously processed (corpus.en.unique.nonalpha.goodlang)
@@ -14,8 +14,7 @@ src=$2
 tcmodel=$3
 bpemodel=$4
 
-mosesdir=~/tools/mosesdecoder/scripts
-subworddir=~/tools/subword-nmt
+mosesdir=/mnt/c/Users/Matiss/Desktop/mosesdecoder/scripts
 
 mkdir $dir/1-tok
 mkdir $dir/2-clean
@@ -37,4 +36,4 @@ $mosesdir/recaser/truecase.perl -model $tcmodel < $dir/2-clean/corpus.clean.tok.
 
 # Split into subword units
 
-$subworddir/apply_bpe.py -c $bpemodel < $dir/3-tc/corpus.tc.$src > $dir/4-bpe/corpus.bpe.$src
+subword-nmt apply-bpe -c $bpemodel < $dir/3-tc/corpus.tc.$src > $dir/4-bpe/corpus.bpe.$src
