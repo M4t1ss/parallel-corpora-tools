@@ -39,7 +39,7 @@ extension="${filename##*.}"
 filename="${filename%.*}"
 
 # Sort and get only unique sentence pairs
-sort $1.$filename.$extension.both | uniq -u > $1.$filename.$extension.both.unique
+sort -u $1.$filename.$extension.both > $1.$filename.$extension.both.unique
 
 # Split the sentences back into two
 php split-parallel.php $1 $2

@@ -12,22 +12,25 @@ dir=$1
 src=$2
 trg=$3
 
-mosesdir=/mnt/c/Users/Matiss/Desktop/mosesdecoder/scripts
+mosesdir=/home/matiss/tools/mosesdecoder/scripts
 
 mkdir $dir/1-tok
 mkdir $dir/2-clean
 mkdir $dir/3-tc
 mkdir $dir/4-bpe
 
-# Tokenize & stuff...
+# Tokenize
 cat $dir/output/corpus.$src.c.up.nor.up.nor.nonalpha.nonmatch.reptok.goodlang | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/corpus.tok.$src
 cat $dir/output/corpus.$trg.c.up.nor.up.nor.nonalpha.nonmatch.reptok.goodlang | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/corpus.tok.$trg
 
-# cat dev/newsdev2018.$src | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/newsdev2018.tok.$src
-# cat dev/newsdev2018.$trg | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/newsdev2018.tok.$trg
+# You usually have these as well
+cat $dir/dev.$src | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/dev.tok.$src
+cat $dir/dev.$trg | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/dev.tok.$trg
+cat $dir/test.$src | $mosesdir/tokenizer/normalize-punctuation.perl -l $src | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $src > $dir/1-tok/test.tok.$src
+cat $dir/test.$trg | $mosesdir/tokenizer/normalize-punctuation.perl -l $trg | $mosesdir/tokenizer/tokenizer.perl -a -threads 8 -l $trg > $dir/1-tok/test.tok.$trg
 
 # Clean
-$mosesdir/training/clean-corpus-n.perl -ratio 3 $dir/1-tok/corpus.tok $src $trg $dir/2-clean/corpus.clean.tok 2 80
+$mosesdir/training/clean-corpus-n.perl $dir/1-tok/corpus.tok $src $trg $dir/2-clean/corpus.clean.tok 2 128
 
 # Train truecasers
 $mosesdir/recaser/train-truecaser.perl -corpus $dir/2-clean/corpus.clean.tok.$trg -model $dir/2-clean/truecase-model.$trg
@@ -36,14 +39,22 @@ $mosesdir/recaser/train-truecaser.perl -corpus $dir/2-clean/corpus.clean.tok.$sr
 # Truecase
 $mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$trg < $dir/2-clean/corpus.clean.tok.$trg > $dir/3-tc/corpus.tc.$trg
 $mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$src < $dir/2-clean/corpus.clean.tok.$src > $dir/3-tc/corpus.tc.$src
-# $mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$trg < $dir/1-tok/newsdev2018.tok.$trg > $dir/3-tc/newsdev2018.tc.$trg
-# $mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$src < $dir/1-tok/newsdev2018.tok.$src > $dir/3-tc/newsdev2018.tc.$src
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$trg < $dir/1-tok/dev.tok.$trg > $dir/3-tc/dev.tc.$trg
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$src < $dir/1-tok/dev.tok.$src > $dir/3-tc/dev.tc.$src
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$trg < $dir/1-tok/test.tok.$trg > $dir/3-tc/test.tc.$trg
+$mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$src < $dir/1-tok/test.tok.$src > $dir/3-tc/test.tc.$src
 
 # Split into subword units
 cat $dir/3-tc/corpus.tc.$trg $dir/3-tc/corpus.tc.$src | subword-nmt learn-bpe -s 35000 > $dir/4-bpe/model.bpe
 
-subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/corpus.tc.$trg > $dir/4-bpe/corpus.bpe.$trg
-subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/corpus.tc.$src > $dir/4-bpe/corpus.bpe.$src
+subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/corpus.tc.$trg > $dir/4-bpe/corpus.bpe.$trg &
+subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/corpus.tc.$src > $dir/4-bpe/corpus.bpe.$src &
 
-# $subworddir/apply_bpe.py -c $dir/4-bpe/model.bpe --vocabulary $dir/4-bpe/vocab.$trg --vocabulary-threshold 50 < $dir/3-tc/newsdev2018.tc.$trg > $dir/4-bpe/newsdev2018.bpe.$trg
-# $subworddir/apply_bpe.py -c $dir/4-bpe/model.bpe --vocabulary $dir/4-bpe/vocab.$src --vocabulary-threshold 50 < $dir/3-tc/newsdev2018.tc.$src > $dir/4-bpe/newsdev2018.bpe.$src
+wait
+
+subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/dev.tc.$trg > $dir/4-bpe/dev.bpe.$trg &
+subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/dev.tc.$src > $dir/4-bpe/dev.bpe.$src &
+subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/test.tc.$trg > $dir/4-bpe/test.bpe.$trg &
+subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/test.tc.$src > $dir/4-bpe/test.bpe.$src &
+
+wait
