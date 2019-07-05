@@ -11,6 +11,9 @@
 dir=$1
 src=$2
 trg=$3
+# The merge operations should be chosen according to the dataset size and languages in question
+# 16000 is probably also OK for a large dataset (2M - 10M), but for smaller ones try 8000 or 4000
+merge_ops=32000
 
 mosesdir=/home/matiss/tools/mosesdecoder/scripts
 
@@ -45,7 +48,7 @@ $mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$trg < $dir/1
 $mosesdir/recaser/truecase.perl -model $dir/2-clean/truecase-model.$src < $dir/1-tok/test.tok.$src > $dir/3-tc/test.tc.$src
 
 # Split into subword units
-cat $dir/3-tc/corpus.tc.$trg $dir/3-tc/corpus.tc.$src | subword-nmt learn-bpe -s 35000 > $dir/4-bpe/model.bpe
+cat $dir/3-tc/corpus.tc.$trg $dir/3-tc/corpus.tc.$src | subword-nmt learn-bpe -s $merge_ops > $dir/4-bpe/model.bpe
 
 subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/corpus.tc.$trg > $dir/4-bpe/corpus.bpe.$trg &
 subword-nmt apply-bpe -c $dir/4-bpe/model.bpe < $dir/3-tc/corpus.tc.$src > $dir/4-bpe/corpus.bpe.$src &
