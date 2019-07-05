@@ -44,39 +44,42 @@ sort -u $1.$filename.$extension.both > $1.$filename.$extension.both.unique
 # Split the sentences back into two
 php split-parallel.php $1 $2
 
-# Remove repeating source sentences
-php filter-repeating.php $1.up $2.up
+# 	Commented the following lines because multiple sources aligned to one target or multiple 
+# 	targets aligned to one source may be paraphrases or other perfectly valid translations...
 
-# Concatanate sentences from both files with the target file as the first one
-php concat-parallel.php $2.up.nor $1.up.nor
+# # # # # Remove repeating source sentences
+# # # # php filter-repeating.php $1.up $2.up
+
+# # # # # Concatanate sentences from both files with the target file as the first one
+# # # # php concat-parallel.php $2.up.nor $1.up.nor
 
 
-# Remove some useless files
-rm $1.$filename.$extension.both
-rm $1.$filename.$extension.both.unique
-filename=$(basename "$1")
-extension="${filename##*.}"
-filename="${filename%.*}"
+# # # # # Remove some useless files
+# # # # rm $1.$filename.$extension.both
+# # # # rm $1.$filename.$extension.both.unique
+# # # # filename=$(basename "$1")
+# # # # extension="${filename##*.}"
+# # # # filename="${filename%.*}"
 
-# Sort
-sort $2.up.nor.$filename.$extension.up.nor.both > $2.up.nor.$filename.$extension.up.nor.both.unique
+# # # # # Sort
+# # # # sort $2.up.nor.$filename.$extension.up.nor.both > $2.up.nor.$filename.$extension.up.nor.both.unique
 
-# Split the sentences back into two
-php split-parallel.php $2.up.nor $1.up.nor
+# # # # # Split the sentences back into two
+# # # # php split-parallel.php $2.up.nor $1.up.nor
 
-# Remove repeating source sentences
-php filter-repeating.php $2.up.nor.up $1.up.nor.up
+# # # # # Remove repeating source sentences
+# # # # php filter-repeating.php $2.up.nor.up $1.up.nor.up
+# # # # # Remove some useless files
+# # # # rm $2.up.nor.$filename.$extension.up.nor.both
+# # # # rm $2.up.nor.$filename.$extension.up.nor.both.unique
 
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
-php non-alpha.php $1.up.nor.up.nor $2.up.nor.up.nor $3 $4
+php non-alpha.php $1.up $2.up $3 $4
 
 # Remove sentences where there are more non-alphabetical symbols than alphabetical
-php non-matching-non-alpha.php $1.up.nor.up.nor.nonalpha $2.up.nor.up.nor.nonalpha $3 $4
+php non-matching-non-alpha.php $1.up.nonalpha $2.up.nonalpha $3 $4
 
 # Remove sentences that have repeating tokens (this is more useful for filtering back-translated data)
-php repeating-tokens.php $1.up.nor.up.nor.nonalpha.nonmatch $2.up.nor.up.nor.nonalpha.nonmatch
+php repeating-tokens.php $1.up.nonalpha.nonmatch $2.up.nonalpha.nonmatch
 
-# Remove some useless files
-rm $2.up.nor.$filename.$extension.up.nor.both
-rm $2.up.nor.$filename.$extension.up.nor.both.unique
 
