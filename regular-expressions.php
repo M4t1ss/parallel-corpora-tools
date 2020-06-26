@@ -5,4 +5,4 @@ $regex['en'] = "a-zA-Z";
 $regex['fi'] = "a-zA-ZäåöšžÄÅÖŠŽ";
 $regex['tr'] = "a-zA-ZçğöşüÇĞÖŞÜ";
 $regex['de'] = "a-zA-ZäöüßÄÖÜẞ";
-$regex['ja'] = "a-zA-Z一-龯";
+$regex['ja'] = "一-龠ぁ-ゔァ-ヴーａ-ｚＡ-Ｚ々〆〤";

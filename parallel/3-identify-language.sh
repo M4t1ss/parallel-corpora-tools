@@ -29,4 +29,6 @@ filename=$(basename "$2")
 extension="${filename##*.}"
 filename="${filename%.*}"
 
-php filter.php $1 $2 $1.lang.txt.$filename.$extension.lang.txt.bad
+# filter-parallel.php requires PHP to be compiled with additional flags (details here https://www.php.net/manual/en/parallel.setup.php)
+# filter.php will do the same job, but it will be slower...
+php filter-parallel.php $1 $2 $1.lang.txt.$filename.$extension.lang.txt.bad

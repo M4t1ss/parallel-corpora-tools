@@ -32,7 +32,7 @@ If you use this tool, please cite the following paper:
 
 Matīss Rikters (2018). "[Impact of Corpora Quality on Neural Machine Translation.](https://arxiv.org/abs/1810.08392)" In Proceedings of the 8th Conference Human Language Technologies - The Baltic Perspective (Baltic HLT 2018) (2018).
 
-```
+```bibtex
 @inproceedings{Rikters2018BalticHLT,
 	author = {Rikters, Matīss},
 	booktitle={In Proceedings of the 8th Conference Human Language Technologies - The Baltic Perspective (Baltic HLT 2018)},
