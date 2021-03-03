@@ -9,8 +9,8 @@ dir=$1
 src=$2
 trg=$3
 
-mkdir $dir/output
-mkdir $dir/output/removed
+mkdir -p $dir/output
+mkdir -p $dir/output/removed
 
 cat $dir/*.$src > $dir/output/corpus.$src
 cat $dir/*.$trg > $dir/output/corpus.$trg
