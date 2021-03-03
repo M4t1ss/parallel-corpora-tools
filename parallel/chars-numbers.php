@@ -25,6 +25,9 @@ $line = 1;
 while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($inTRG)) !== false) {
 	$bad = false;
 	
+	$sourceSentence = trim($sourceSentence);
+	$targetSentence = trim($targetSentence);
+	
 	//Let's see how many non-alphabetic characters are in the sentences.
 	//Latvian and Estonian diacritics only... Add more if working with other languages
 	$onlyAlpha_source = preg_replace($source_regex, "", $sourceSentence);
@@ -40,7 +43,6 @@ while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($
 			$badNumberArray[] = $line;
 			$i++;
 			$bad = true;
-			continue;
 		}
 	}
 	
@@ -64,7 +66,6 @@ while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($
 			$badNumberArray[] = $line;
 			$j++;
 			$bad = true;
-			continue;
 		}
 	}
 	
@@ -83,7 +84,6 @@ while (($sourceSentence = fgets($inSRC)) !== false && ($targetSentence = fgets($
 			$badNumberArray[] = $line;
 			$k++;
 			$bad = true;
-			continue;
 		}	
 	}	
 	
