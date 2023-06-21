@@ -16,4 +16,4 @@ langid --line -n < $1 > $1.lang.txt
 php find-bad.php $1.lang.txt $2
 
 
-php filter.php $1 $1.lang.txt.bad
+php filter-parallel.php $1 $1.lang.txt.bad
